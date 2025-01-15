@@ -1,0 +1,61 @@
+version: '3.8'
+
+services:
+  #  app: # this to genrate the backend image
+  #    image: EasyRecruit:latest
+  #    container_name: easyRecruit-container
+  #    build:
+  #      context: .
+  #      dockerfile: Dockerfile
+  #    ports:
+  #      - "8080:8080"
+  #    depends_on:
+  #      - mysql
+  #    environment:
+  #      SPRING_DATASOURCE_URL: jdbc:mysql://mysql:3306/easy_recruit?createDatabaseIfNotExist=true
+  #      SPRING_DATASOURCE_USERNAME: root
+  #      SPRING_DATASOURCE_PASSWORD: maroc2030
+  #    networks:
+  #      - app-foot
+
+
+  mysql:
+    platform: linux/x86_64
+    image: mysql:8.0.26
+    container_name: mysql-easyrecruit-database
+    command: --default-authentication-plugin=mysql_native_password
+    restart: always
+    ports:
+      - 3306:3306
+    volumes:
+      - mysql:/var/lib/mysql
+      - ./docker/dev/init.sql:/docker-entrypoint-initdb.d/1-schema.sql
+    environment:
+      MYSQL_ROOT_PASSWORD: easy2024
+
+    healthcheck:
+      test: "/usr/bin/mysql --user=root --password=easy2024 --execute \"SHOW DATABASES;\""
+      interval: 100s
+      retries: 10
+    networks:
+      - easy-recruit
+
+  keycloak:
+    container_name: keycloak-easy-recruit
+    image: quay.io/keycloak/keycloak:26.0.6
+    ports:
+      - 8090:8080
+    environment:
+      KEYCLOAK_ADMIN: admin
+      KEYCLOAK_ADMIN_PASSWORD: admin
+    networks:
+      - easy-recruit
+    command:
+      - "start-dev"
+
+networks:
+  easy-recruit:
+    driver: bridge
+
+volumes:
+  mysql:
