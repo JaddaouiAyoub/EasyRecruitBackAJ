@@ -44,7 +44,7 @@ public class SecurityConfig {
                 // Configuration du serveur de ressources OAuth2 avec JWT
                 .oauth2ResourceServer(oauth2 -> oauth2
                         .jwt(jwt -> jwt
-                                .decoder(JwtDecoders.fromIssuerLocation(keycloakBaseUrl+"/realms/recruitment"))  // Spécifie l'émetteur
+                                .decoder(JwtDecoders.fromIssuerLocation(keycloakBaseUrl+"/realms/master"))  // Spécifie l'émetteur
                                 .jwtAuthenticationConverter(jwtAuthConverter)  // Injecte le convertisseur personnalisé pour les rôles
                         )
                 )
