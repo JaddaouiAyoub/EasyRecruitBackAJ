@@ -1,6 +1,7 @@
 package org.example.easyrecruitbackend.configuration;
 
 import lombok.RequiredArgsConstructor;
+import org.springframework.beans.factory.annotation.Value;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
 import org.springframework.security.config.annotation.method.configuration.EnableMethodSecurity;
@@ -19,6 +20,8 @@ import org.springframework.web.cors.UrlBasedCorsConfigurationSource;
 public class SecurityConfig {
 
     private final JwtAuthConverter jwtAuthConverter;
+    @Value("${keycloak.base-url}")
+    private String keycloakBaseUrl;
 
     @Bean
     public SecurityFilterChain securityFilterChain(HttpSecurity http) throws Exception {
@@ -41,7 +44,7 @@ public class SecurityConfig {
                 // Configuration du serveur de ressources OAuth2 avec JWT
                 .oauth2ResourceServer(oauth2 -> oauth2
                         .jwt(jwt -> jwt
-                                .decoder(JwtDecoders.fromIssuerLocation("http://localhost:8090/realms/recruitment"))  // Spécifie l'émetteur
+                                .decoder(JwtDecoders.fromIssuerLocation(keycloakBaseUrl+"/realms/recruitment"))  // Spécifie l'émetteur
                                 .jwtAuthenticationConverter(jwtAuthConverter)  // Injecte le convertisseur personnalisé pour les rôles
                         )
                 )
@@ -57,7 +60,7 @@ public class SecurityConfig {
     @Bean
     public UrlBasedCorsConfigurationSource corsConfigurationSource() {
         CorsConfiguration configuration = new CorsConfiguration();
-        configuration.addAllowedOrigin("http://localhost:4200"); // Origine autorisée
+        configuration.addAllowedOrigin("https://easy-recruit-front-aj.vercel.app/"); // Origine autorisée
         configuration.addAllowedMethod("*"); // Autoriser toutes les méthodes HTTP
         configuration.addAllowedHeader("*"); // Autoriser tous les en-têtes
         configuration.setAllowCredentials(true); // Autoriser les cookies (si nécessaire)
