@@ -1,24 +1,20 @@
-# Étape 1 : Utiliser une image JDK pour compiler le code (optionnel si vous construisez le JAR en dehors de Docker)
-FROM maven:3.9.9-amazoncorretto-17 AS builder
-
-# Copier les sources dans le conteneur
+# Étape 1 : Construire l'application avec Maven
+FROM maven:3.9.1-eclipse-temurin-17 AS build
 WORKDIR /app
-COPY . .
 
-# Construire l'application Spring Boot
+# Copier le pom.xml et les autres fichiers nécessaires à la construction de l'application
+COPY pom.xml ./
+COPY src ./src
+
+# Exécuter Maven pour construire l'application sans tests
 RUN mvn clean package -DskipTests
 
-# Étape 2 : Utiliser une image JRE pour exécuter l'application
-FROM amazoncorretto:17.0.0-alpine3.14
-
-# Définir le répertoire de travail
+# Étape 2 : Utiliser une image OpenJDK légère pour exécuter l'application
+FROM openjdk:17-jdk-slim
 WORKDIR /app
 
-# Copier le fichier JAR généré par Maven depuis l'étape précédente
-COPY --from=builder /app/target/*.jar app.jar
+# Copier uniquement le fichier JAR généré depuis l'étape de build
+COPY --from=build /app/target/easyrecruitbackend-0.0.1-SNAPSHOT.jar /app/easyrecruitbackend.jar
 
-# Exposer le port utilisé par l'application Spring Boot
-EXPOSE 8080
-
-# Commande pour exécuter l'application
-CMD ["java", "-jar", "app.jar"]
+# Spécifier la commande d'exécution
+ENTRYPOINT ["java", "-jar", "/app/easyrecruitbackend.jar"]
