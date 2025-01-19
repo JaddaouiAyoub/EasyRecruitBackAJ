@@ -1,18 +1,18 @@
-package org.example.easyrecruitbackend.configuration;
-
-import org.springframework.context.annotation.Configuration;
-import org.springframework.web.servlet.config.annotation.CorsRegistry;
-import org.springframework.web.servlet.config.annotation.WebMvcConfigurer;
-
-@Configuration
-public class WebConfig implements WebMvcConfigurer {
-
-    @Override
-    public void addCorsMappings(CorsRegistry registry) {
-        registry.addMapping("/**") // Permettre CORS sur toutes les routes
-                .allowedOrigins("*") // Origine autorisée
-                .allowedMethods("GET", "POST", "PUT", "DELETE", "OPTIONS") // Méthodes autorisées
-                .allowedHeaders("*") // Autoriser tous les en-têtes
-                .allowCredentials(false); // Autoriser les cookies, si nécessaire
-    }
-}
+//package org.example.easyrecruitbackend.configuration;
+//
+//import org.springframework.context.annotation.Configuration;
+//import org.springframework.web.servlet.config.annotation.CorsRegistry;
+//import org.springframework.web.servlet.config.annotation.WebMvcConfigurer;
+//
+//@Configuration
+//public class WebConfig implements WebMvcConfigurer {
+//
+//    @Override
+//    public void addCorsMappings(CorsRegistry registry) {
+//        registry.addMapping("/**") // Permettre CORS sur toutes les routes
+//                .allowedOrigins("*") // Origine autorisée
+//                .allowedMethods("GET", "POST", "PUT", "DELETE", "OPTIONS") // Méthodes autorisées
+//                .allowedHeaders("*") // Autoriser tous les en-têtes
+//                .allowCredentials(false); // Autoriser les cookies, si nécessaire
+//    }
+//}
