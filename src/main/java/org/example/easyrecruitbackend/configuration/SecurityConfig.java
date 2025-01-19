@@ -60,10 +60,10 @@ public class SecurityConfig {
     @Bean
     public UrlBasedCorsConfigurationSource corsConfigurationSource() {
         CorsConfiguration configuration = new CorsConfiguration();
-        configuration.addAllowedOrigin("https://easy-recruit-front-aj.vercel.app/"); // Origine autorisée
+        configuration.addAllowedOrigin("https://easy-recruit-front-aj.vercel.app"); // Origine autorisée
         configuration.addAllowedMethod("*"); // Autoriser toutes les méthodes HTTP
         configuration.addAllowedHeader("*"); // Autoriser tous les en-têtes
-        configuration.setAllowCredentials(true); // Autoriser les cookies (si nécessaire)
+        configuration.setAllowCredentials(false); // Autoriser les cookies (si nécessaire)
 
         UrlBasedCorsConfigurationSource source = new UrlBasedCorsConfigurationSource();
         source.registerCorsConfiguration("/**", configuration); // Appliquer à toutes les routes
