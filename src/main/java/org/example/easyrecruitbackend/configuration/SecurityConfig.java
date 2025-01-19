@@ -13,6 +13,8 @@ import org.springframework.security.web.SecurityFilterChain;
 import org.springframework.web.cors.CorsConfiguration;
 import org.springframework.web.cors.UrlBasedCorsConfigurationSource;
 
+import java.util.List;
+
 @Configuration
 @EnableWebSecurity
 @EnableMethodSecurity
@@ -60,13 +62,13 @@ public class SecurityConfig {
     @Bean
     public UrlBasedCorsConfigurationSource corsConfigurationSource() {
         CorsConfiguration configuration = new CorsConfiguration();
-        configuration.addAllowedOrigin("*"); // Origine spécifique autorisée
-        configuration.addAllowedMethod("*"); // Autoriser toutes les méthodes HTTP
-        configuration.addAllowedHeader("*"); // Autoriser tous les en-têtes
-        configuration.setAllowCredentials(false); // Autoriser les cookies
+        configuration.setAllowedOrigins(List.of("https://easy-recruit-front-aj.vercel.app")); // Remplacez "*" par des domaines spécifiques
+        configuration.setAllowedMethods(List.of("GET", "POST", "PUT", "DELETE", "OPTIONS"));
+        configuration.setAllowedHeaders(List.of("*"));
+        configuration.setAllowCredentials(true); // Si vous utilisez des cookies ou des sessions partagées
 
         UrlBasedCorsConfigurationSource source = new UrlBasedCorsConfigurationSource();
-        source.registerCorsConfiguration("/**", configuration); // Appliquer à toutes les routes
+        source.registerCorsConfiguration("/**", configuration);
         return source;
     }
 
